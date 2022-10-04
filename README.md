@@ -1,43 +1,49 @@
-# Welcome to dockermgr ympd installer 👋
+## 👋 Welcome to ympd 🚀  
+
+ympd README  
   
-## ympd is a web based mpd client
   
-### Requires scripts to be installed
+## Run container
 
 ```shell
- sudo bash -c "$(curl -LSs <https://github.com/dockermgr/installer/raw/main/install.sh>)"
- dockermgr --config && dockermgr install scripts  
+dockermgr update ympd
 ```
 
-#### Automatic install/update  
+### via command line
 
 ```shell
-dockermgr install ympd
+docker pull casjaysdevdocker/ympd:latest && \
+docker run -d \
+--restart always \
+--name casjaysdevdocker-ympd \
+--hostname casjaysdev-ympd \
+-e TZ=${TIMEZONE:-America/New_York} \
+-v $HOME/.local/share/srv/docker/ympd/files/data:/data:z \
+-v $HOME/.local/share/srv/docker/ympd/files/config:/config:z \
+-p 80:80 \
+casjaysdevdocker/ympd:latest
 ```
 
+### via docker-compose
 
-#### Manual install
-
-```shell
-git clone https://github.com/dockermgr/ympd "$HOME/.local/share/CasjaysDev/dockermgr/ympd"
-bash -c "$HOME/.local/share/CasjaysDev/dockermgr/ympd/install.sh"
-```
-  
-#### Just run it
-
-```shell
-git clone <https://github.com/dockermgr/ympd> "$HOME/.local/share/CasjaysDev/dockermgr/ympd"
-
-sudo docker run -d \
---name="ympd" \
---hostname "ympd" \
---restart=always \
---privileged \
--e TZ="${TZ:-${TIMEZONE:-America/New_York}}" \
--p 8082:8082 \
-casjay/ympd 1>/dev/null
+```yaml
+version: "2"
+services:
+  ympd:
+    image: casjaysdevdocker/ympd
+    container_name: ympd
+    environment:
+      - TZ=America/New_York
+      - HOSTNAME=casjaysdev-ympd
+    volumes:
+      - $HOME/.local/share/srv/docker/ympd/files/data:/data:z
+      - $HOME/.local/share/srv/docker/ympd/files/config:/config:z
+    ports:
+      - 80:80
+    restart: always
 ```
 
-## Author  
+## Authors  
 
-👤 **Jason Hempstead**  
+🤖 casjay: [Github](https://github.com/casjay) [Docker](https://hub.docker.com/r/casjay) 🤖  
+⛵ CasjaysDevDocker: [Github](https://github.com/casjaysdevdocker) [Docker](https://hub.docker.com/r/casjaysdevdocker) ⛵  
